@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+        
+
 jobs:
   send_email:
     runs-on: ubuntu-latest
@@ -12,9 +14,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install sendmail
-      run: sudo apt-get update && sudo apt-get install -y sendmail
-
     - name: Send email notification
       env:
         SMTP_SERVER: smtp.gmail.com
@@ -22,10 +21,11 @@ jobs:
         SMTP_USER: ${{ secrets.SMTP_USER }}
         SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         RECIPIENT: 'mancillarober24@gmail.com'
-        MAIN: ${{ github.ref }}
+        BRANCH_NAME: ${{ github.ref }}
       run: |
         BRANCH_NAME=${BRANCH_NAME#refs/heads/}
         SUBJECT="Changes pushed to branch $BRANCH_NAME"
         BODY="Hello, changes have been pushed to the branch: $BRANCH_NAME."
         echo -e "Subject:$SUBJECT\n\n$BODY" | sendmail -S $SMTP_SERVER:$SMTP_PORT -f $SMTP_USER -t $RECIPIENT
+
 
