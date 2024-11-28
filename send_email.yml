@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - develop
-      - feature/*  # Puedes agregar más ramas si lo necesitas
+      - main/*  # Puedes agregar más ramas si lo necesitas
 
 jobs:
   send_email:
@@ -22,9 +22,9 @@ jobs:
         SMTP_USER: ${{ secrets.SMTP_USER }}
         SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         RECIPIENT: 'mancillarober24@gmail.com'
-        BRANCH_NAME: ${{ github.ref }}
+        main: ${{ github.ref }}
       run: |
-        BRANCH_NAME=${BRANCH_NAME#refs/heads/}
+        main=${main#refs/heads/}
         SUBJECT="Changes pushed to branch $BRANCH_NAME"
         BODY="Hello, changes have been pushed to the branch: $BRANCH_NAME."
         echo -e "Subject:$SUBJECT\n\n$BODY" | sendmail -S $SMTP_SERVER:$SMTP_PORT -f $SMTP_USER -t $RECIPIENT
