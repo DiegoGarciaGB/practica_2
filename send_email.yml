@@ -1,26 +1,30 @@
-name: Send Email
+name: Send Email on Push
 
 on:
-  push: 
+  push:
     branches:
       - main
+      - develop
+      - feature/*  # Puedes agregar más ramas si lo necesitas
 
 jobs:
   send_email:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Send Email
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: ${{ secrets.SMTP_SERVER }}
-          server_port: ${{ secrets.SMTP_PORT }}
-          username: ${{ secrets.SMTP_USER }}
-          password: ${{ secrets.SMTP_PASSWORD }}
-          subject: "Notificación de GitHub Actions"
-          to: "mancillarober24@gmail.com"
-          from: ${{ secrets.SMTP_USER }}
-          body: "Este correo fue enviado automáticamente desde GitHub Actions. Funciona?"
+    - name: Send email notification
+      env:
+        SMTP_SERVER: smtp.gmail.com
+        SMTP_PORT: 587
+        SMTP_USER: ${{ secrets.SMTP_USER }}
+        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        RECIPIENT: 'example@example.com'
+        BRANCH_NAME: ${{ github.ref }}
+      run: |
+        BRANCH_NAME=${BRANCH_NAME#refs/heads/}
+        SUBJECT="Changes pushed to branch $BRANCH_NAME"
+        BODY="Hello, changes have been pushed to the branch: $BRANCH_NAME."
+        echo -e "Subject:$SUBJECT\n\n$BODY" | sendmail -S $SMTP_SERVER:$SMTP_PORT -f $SMTP_USER -t $RECIPIENT
