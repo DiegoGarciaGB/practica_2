@@ -1,3 +1,8 @@
+name: send mail on push
+on:
+  push:
+    branches:
+      - main
 jobs:
   send_email:
     runs-on: ubuntu-latest
