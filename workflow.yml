@@ -1,0 +1,26 @@
+name: Send Email
+
+on:
+  push: 
+    branches:
+      - main
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Send Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USER }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "Notificación de GitHub Actions"
+          to: "destinatario@example.com"
+          from: ${{ secrets.SMTP_USER }}
+          body: "Este correo fue enviado automáticamente desde GitHub Actions."
