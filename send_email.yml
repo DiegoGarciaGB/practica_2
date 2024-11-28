@@ -21,7 +21,7 @@ jobs:
         SMTP_PORT: 587
         SMTP_USER: ${{ secrets.SMTP_USER }}
         SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-        RECIPIENT: 'example@example.com'
+        RECIPIENT: 'mancillarober24@gmail.com'
         BRANCH_NAME: ${{ github.ref }}
       run: |
         BRANCH_NAME=${BRANCH_NAME#refs/heads/}
