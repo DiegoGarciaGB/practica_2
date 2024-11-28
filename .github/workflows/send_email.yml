@@ -1,11 +1,3 @@
-name: Send Email on Push
-
-on:
-  push:
-    branches:
-      - main
-        
-
 jobs:
   send_email:
     runs-on: ubuntu-latest
@@ -13,6 +5,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Install sendmail
+      run: sudo apt-get update && sudo apt-get install -y sendmail
 
     - name: Send email notification
       env:
@@ -27,5 +22,3 @@ jobs:
         SUBJECT="Changes pushed to branch $BRANCH_NAME"
         BODY="Hello, changes have been pushed to the branch: $BRANCH_NAME."
         echo -e "Subject:$SUBJECT\n\n$BODY" | sendmail -S $SMTP_SERVER:$SMTP_PORT -f $SMTP_USER -t $RECIPIENT
-
-
