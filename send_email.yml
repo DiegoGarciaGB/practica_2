@@ -23,4 +23,4 @@ jobs:
           subject: "Notificación de GitHub Actions"
           to: "destinatario@example.com"
           from: ${{ secrets.SMTP_USER }}
-          body: "Este correo fue enviado automáticamente desde GitHub Actions."
+          body: "Este correo fue enviado automáticamente desde GitHub Actions.Esto es una prueba"
